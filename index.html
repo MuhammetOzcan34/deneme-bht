@@ -5,23 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TV Web Uygulaması</title>
     <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
+    <!-- Tam ekran video -->
     <div class="fullscreen-video">
         <iframe 
             src="https://www.youtube.com/embed/qWNpyM6WHa4?playlist=qWNpyM6WHa4&controls=0&autoplay=1&loop=1&mute=1&version=3" 
             frameborder="0" allowfullscreen>
         </iframe>
     </div>
+
+    <!-- Sağda Dikey Widget Barı -->
     <div class="right-widget-bar">
         <img src="logo.png" alt="Logo" class="logo">
-        <div class="widget">TCMB Döviz Kurları</div>
-        <div class="widget">İstanbul Hava Durumu</div>
-        <div class="widget">Saat</div>
+        <div class="widget" id="exchange-rates">Döviz Kurları Yükleniyor...</div>
+        <div class="widget" id="weather">Hava Durumu Yükleniyor...</div>
+        <div class="widget" id="clock">Saat Yükleniyor...</div>
     </div>
+
+    <!-- Altta Kayan Haber Barı -->
     <div class="bottom-ticker">
-        <marquee behavior="scroll" direction="left">
-            Türkiye ve Dünyadan Haberler: Örnek Haber 1 | Örnek Haber 2 | Örnek Haber 3
+        <marquee behavior="scroll" direction="left" id="news-ticker">
+            Haberler yükleniyor...
         </marquee>
     </div>
 </body>
