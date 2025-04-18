@@ -15,6 +15,7 @@ async function fetchRSS() {
     const headlines = data.items.map(item => item.title).join(" | ");
     document.getElementById("newsTicker").innerText = headlines;
   } catch (e) {
+    console.error("RSS Verisi Yüklenemedi:", e);
     document.getElementById("newsTicker").innerText = "Haberler yüklenemedi.";
   }
 }
