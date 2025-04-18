@@ -1,26 +1,20 @@
 // TCMB Döviz Kurları
-async function fetchExchangeRates() {
-    const response = await fetch("https://api.exchangerate.host/latest?base=TRY");
-    const data = await response.json();
-    const rates = data.rates;
+function fetchExchangeRates() {
     const widget = document.getElementById("exchange-rates");
     widget.innerHTML = `
         <h3>Döviz Kurları</h3>
-        <p>USD: ${rates.USD.toFixed(2)}</p>
-        <p>EUR: ${rates.EUR.toFixed(2)}</p>
+        <p>USD: 23.50</p>
+        <p>EUR: 25.30</p>
     `;
 }
 
 // İstanbul Hava Durumu
-async function fetchWeather() {
-    const apiKey = "YOUR_API_KEY"; // OpenWeatherMap API anahtarınızı buraya ekleyin
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Istanbul&units=metric&lang=tr&appid=${apiKey}`);
-    const data = await response.json();
+function fetchWeather() {
     const widget = document.getElementById("weather");
     widget.innerHTML = `
         <h3>İstanbul Hava Durumu</h3>
-        <p>${data.weather[0].description}</p>
-        <p>Sıcaklık: ${data.main.temp}°C</p>
+        <p>Açık</p>
+        <p>Sıcaklık: 22°C</p>
     `;
 }
 
@@ -35,11 +29,11 @@ function updateClock() {
 }
 
 // RSS Haber Akışı
-async function fetchNews() {
-    const response = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.hurriyet.com.tr/rss/anasayfa");
-    const data = await response.json();
+function fetchNews() {
     const newsTicker = document.getElementById("news-ticker");
-    newsTicker.innerHTML = data.items.map(item => item.title).join(" | ");
+    newsTicker.innerHTML = `
+        Türkiye ve dünyadan haberler: Örnek Haber 1 | Örnek Haber 2 | Örnek Haber 3
+    `;
 }
 
 // Sayfa yüklendiğinde çalıştır
