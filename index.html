@@ -1,28 +1,160 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Binsat TV</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>BİNSAT TV</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #001833, #000a14);
+      color: white;
+      overflow: hidden;
+    }
+
+    #container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Dikey videoları boşluksuz yayar */
+      z-index: 0;
+    }
+
+    /* Sağdaki Widget Panel */
+    #widget-panel {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 320px;
+      height: 100%;
+      background: linear-gradient(to bottom, #001c3f, #000a1e);
+      padding: 10px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #widget-panel img {
+      width: 220px;
+      margin: 15px 0 25px;
+    }
+
+    .widget {
+      margin: 10px 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Haber Akışı Bandı */
+    #news-ticker {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(to right, #001833, #000a14);
+      color: white;
+      padding: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      z-index: 3;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    #news-ticker-content {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 30s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
 </head>
 <body>
-  <div class="video-container">
-    <!-- Video geçici olarak kaldırıldı -->
-    <div class="right-sidebar">
-      <img src="logo.png" alt="Logo" class="logo" />
-      <div class="widget">Saat: <span id="clock"></span></div>
+  <div id="container">
+    <!-- Video Alanı -->
+    <video autoplay muted loop id="mainVideo">
+      <source src="BinsatTurizm.mp4" type="video/mp4">
+      Tarayıcınız video etiketini desteklemiyor.
+    </video>
+
+    <!-- Widget Paneli Sağda -->
+    <div id="widget-panel">
+      <!-- Logo -->
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAACECAYAAACu5qZFAAAtvUlEQVR4nO29d6Ad1X3v+/mtafs06a..." alt="Logo">
+
+      <!-- Saat -->
+      <div class="widget" id="saat">Saat: ...</div>
+
+      <!-- Hava Durumu -->
       <div class="widget">
-        <iframe src="https://www.mgm.gov.tr/sunum/tahmin-show-2.aspx?il=İstanbul" 
-                width="100%" height="150" style="border:none;"></iframe>
+        <a class="weatherwidget-io" href="https://forecast7.com/tr/41d01128d97/istanbul/"
+           data-label_1="İSTANBUL" data-label_2="HAVA DURUMU" data-theme="pure">
+          İstanbul Hava Durumu
+        </a>
       </div>
+
+      <!-- Döviz Kurları -->
       <div class="widget">
-        <iframe src="https://www.tcmb.gov.tr/kurlar/today.xml" 
-                width="100%" height="150" style="border:none;"></iframe>
+        <iframe src="https://www.tcmb.gov.tr/kurlar/kurlar_tr.html" width="100%" height="120" style="border:none;"></iframe>
       </div>
     </div>
-    <div class="news-ticker" id="newsTicker">Yükleniyor...</div>
+
+    <!-- Haber Bandı -->
+    <div id="news-ticker">
+      <span id="news-ticker-content">Yükleniyor...</span>
+    </div>
   </div>
-  <script src="script.js"></script>
+
+  <!-- Saat Scripti -->
+  <script>
+    function saatGuncelle() {
+      const now = new Date();
+      const saat = now.toLocaleTimeString("tr-TR");
+      document.getElementById("saat").innerText = "Saat: " + saat;
+    }
+    setInterval(saatGuncelle, 1000);
+    saatGuncelle();
+  </script>
+
+  <!-- Hava Durumu Scripti -->
+  <script>
+    !function(d,s,id){
+      var js,fjs=d.getElementsByTagName(s)[0];
+      if(!d.getElementById(id)){
+        js=d.createElement(s);js.id=id;
+        js.src='https://weatherwidget.io/js/widget.min.js';
+        fjs.parentNode.insertBefore(js,fjs);
+      }
+    }(document,'script','weatherwidget-io-js');
+  </script>
+
+  <!-- Haber Akışı (TRT RSS) -->
+  <script>
+    fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.trthaber.com/xml_mobile.php')
+      .then(res => res.json())
+      .then(data => {
+        const haberler = data.items.map(item => item.title);
+        document.getElementById("news-ticker-content").innerText = haberler.join("     •     ");
+      })
+      .catch(err => {
+        document.getElementById("news-ticker-content").innerText = "Haberler yüklenemedi.";
+      });
+  </script>
 </body>
 </html>
