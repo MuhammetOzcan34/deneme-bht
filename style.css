@@ -9,13 +9,14 @@ body {
     background-color: black;
     color: white;
     overflow: hidden;
+    position: relative;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100vh;
 }
 
 .fullscreen-video {
-    flex: 1; /* Video alanını esnet */
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,6 +27,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Dikey videoları yatay doldurmak için */
+    z-index: 0; /* Video en arkada kalacak */
 }
 
 .right-widget-bar {
@@ -39,6 +41,7 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    z-index: 10; /* Widget barı videonun üstünde olacak */
 }
 
 .logo {
@@ -61,6 +64,10 @@ body {
     padding: 10px 0;
     text-align: center;
     width: 100%;
+    z-index: 10; /* Kayan yazı videonun üstünde olacak */
     position: relative;
-    z-index: 1;
+}
+
+marquee {
+    font-size: 1.2rem;
 }
